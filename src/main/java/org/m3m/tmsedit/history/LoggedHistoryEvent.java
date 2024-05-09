@@ -8,17 +8,19 @@ import java.util.function.Consumer;
 public class LoggedHistoryEvent<T> extends HistoryEvent<T> {
 
 	private final Consumer<T> log;
+	private final T to;
 
-	public LoggedHistoryEvent(T data, String description, Runnable redo,
+	public LoggedHistoryEvent(T from, T to, String description, Runnable redo,
 			Consumer<T> undo, Consumer<T> log) {
-		super(data, description, redo, undo);
+		super(from, description, redo, undo);
 		this.log = log;
+		this.to = to;
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
-		log.accept(data);
+		log.accept(to);
 	}
 
 	@Override
