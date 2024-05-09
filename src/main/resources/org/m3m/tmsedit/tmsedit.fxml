@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@style.css"
+            fx:controller="org.m3m.tmsedit.TMSEditController">
+  <top>
+    <MenuBar>
+      <Menu text="File">
+        <MenuItem text="New File" mnemonicParsing="false" accelerator="Ctrl+N" onAction="#newFileDialog"/>
+        <MenuItem text="Open File" mnemonicParsing="false" accelerator="Ctrl+O" onAction="#openFileDialog"/>
+        <MenuItem text="Save File" mnemonicParsing="false" accelerator="Ctrl+S" onAction="#saveFile"/>
+        <MenuItem text="Save File" mnemonicParsing="false" accelerator="Ctrl+Shift+S" onAction="#saveFileDialog"/>
+      </Menu>
+      <Menu text="Edit">
+        <MenuItem text="Undo" mnemonicParsing="false" accelerator="Ctrl+Z" onAction="#undo"/>
+        <MenuItem text="Redo" mnemonicParsing="false" accelerator="Ctrl+Y" onAction="#redo"/>
+        <MenuItem text="Copy" mnemonicParsing="false" accelerator="Ctrl+C" onAction="#copy"/>
+        <MenuItem text="Cut" mnemonicParsing="false" accelerator="Ctrl+X" onAction="#cut"/>
+        <MenuItem text="Paste" mnemonicParsing="false" accelerator="Ctrl+V" onAction="#paste"/>
+      </Menu>
+      <Menu text="Tool">
+        <MenuItem text="New Test Case" mnemonicParsing="false" accelerator="Ctrl+Shift+A" onAction="#newTestCase"/>
+        <MenuItem text="New Suite" mnemonicParsing="false" accelerator="Ctrl+Shift+S" onAction="#newSuite"/>
+        <MenuItem text="Clone Choosen" mnemonicParsing="false" accelerator="Ctrl+Q" onAction="#cloneChosen"/>
+        <MenuItem text="Open History" mnemonicParsing="false" accelerator="Ctrl+H" onAction="#showHistory"/>
+      </Menu>
+      <Menu text="View">
+        <MenuItem text="Project View" mnemonicParsing="false" accelerator="Ctrl+P" onAction="#toggleProjectTreeView"/>
+        <MenuItem text="Log View" mnemonicParsing="false" accelerator="Ctrl+L" onAction="#toggleLogView"/>
+      </Menu>
+      <Menu text="Options">
+        <Menu text="Mode">
+          <MenuItem text="Api Test Cases" onAction="#setModeApiTestCases"/>
+        </Menu>
+        <Menu text="Driver">
+          <MenuItem text="Xml Qase" onAction="#setDriverXmlQase"/>
+        </Menu>
+      </Menu>
+    </MenuBar>
+  </top>
+  <center>
+    <SplitPane fx:id="sideSplit" dividerPositions="0.35">
+      <ScrollPane fx:id="projectViewPane" fitToWidth="true" fitToHeight="true">
+        <TreeView fx:id="projectView"/>
+      </ScrollPane>
+      <SplitPane fx:id="mainSplit" orientation="VERTICAL" dividerPositions="0.675">
+        <VBox fx:id="content">
+          <HBox fx:id="suiteEdit">
+
+          </HBox>
+        </VBox>
+        <TextArea fx:id="logField"/>
+      </SplitPane>
+    </SplitPane>
+  </center>
+  <bottom>
+    <HBox id="infoPane" spacing="20" alignment="BASELINE_CENTER">
+      <HBox>
+        <Label text="Status: "/>
+        <Label fx:id="status" text="None"/>
+      </HBox>
+      <HBox>
+        <Label text="Source: "/>
+        <Label fx:id="source" text="None"/>
+        <Label text="["/>
+        <Label fx:id="driver" text="None"/>
+        <Label text="]"/>
+      </HBox>
+      <HBox>
+        <Label text="Mode: "/>
+        <Label fx:id="mode" text="None"/>
+      </HBox>
+      <HBox>
+        <Label text="History Id: "/>
+        <Label fx:id="historyId" text="None"/>
+      </HBox>
+      <HBox>
+        <Label text="Current Focus: "/>
+        <Label fx:id="currentFocus" text="None"/>
+      </HBox>
+    </HBox>
+  </bottom>
+</BorderPane>

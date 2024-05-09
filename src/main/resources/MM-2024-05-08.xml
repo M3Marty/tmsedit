@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<nodes>
+  <suites>
+    <node>
+      <id>
+        77
+      </id>
+      <title>
+        Card-Service
+      </title>
+      <description>
+
+      </description>
+      <preconditions>
+
+      </preconditions>
+      <suites>
+        <node>
+          <id>
+            78
+          </id>
+          <title>
+            CaS-1 Открытие банковской карты
+          </title>
+          <description>
+
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+            <node>
+              <id>
+                174
+              </id>
+              <title>
+                Открытие новой банковской карты
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                ВХОДНЫЕ ПАРАМЕТРЫ:
+
+                HEADER parameters: userProfileId в формате uuid (например: 0f586488-3050-47f7-a2a9-66119ac2fba4)
+
+                BODY parameters:
+
+                {
+                &amp;quot;productId&amp;quot;: &amp;quot;f39a2b61-4f1e-4f85-9f94-2cddc9a8e82b&amp;quot;,
+                &amp;quot;accountId&amp;quot;: &amp;quot;c4c0c8c3-9d10-4b22-8c8b-90e67f7d2e2c&amp;quot;,
+                &amp;quot;limitPerMonth&amp;quot;: 10000.0,
+                &amp;quot;paymentSystem&amp;quot;: &amp;quot;VISA&amp;quot;
+                &amp;quot;cardType&amp;quot;: &amp;quot;CREDIT&amp;quot;
+                &amp;quot;currencyCode&amp;quot;: 643
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить POST запрос на URL api/v1/card-service/cards
+                  </action>
+                  <expected_result>
+                    STATUS CODE 201 CREATED + BODY
+                    {
+                    &amp;quot;cardId&amp;quot;: &amp;quot;f39a2b61-4f1e-4f85-9f94-2cddc9a8e82b&amp;quot;,
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+          </cases>
+        </node>
+        <node>
+          <id>
+            79
+          </id>
+          <title>
+            CaS-2 Получение информации о банковской карте клиента
+          </title>
+          <description>
+
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+            <node>
+              <id>
+                175
+              </id>
+              <title>
+                Получение информации о банковской карте клиента
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                ВХОДНЫЕ ПАРАМЕТРЫ:
+
+                HEADER parameters: cardId в формате int (например: 13512)
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                medium
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                is-not-automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить GET запрос на URL api/v1/card-service/cards?cardId={cardId}
+                  </action>
+                  <expected_result>
+                    STATUS CODE 200 + BODY
+                    {
+                    &amp;quot;productId&amp;quot;: &amp;quot;e3b8d6c1-4a9f-41c7-8e7d-3f2b9b9bfaa1&amp;quot;,
+                    &amp;quot;statusCardId&amp;quot;: &amp;quot;123456789&amp;quot;,
+                    &amp;quot;userProfileId&amp;quot;: &amp;quot;b7e64a1d-2b1a-4f82-9e48-7c6d0c4d2b3e&amp;quot;,
+                    &amp;quot;accountId&amp;quot;: &amp;quot;a9f8e7d6-c5b4-4a3f-2e1d-1c0b9a8b7a6f&amp;quot;,
+                    &amp;quot;paymentSystem&amp;quot;: &amp;quot;VISA&amp;quot;
+                    &amp;quot;isMain&amp;quot;: true,
+                    &amp;quot;numberCard&amp;quot;: &amp;quot;1255 1255 1245 1234&amp;quot;,
+                    &amp;quot;cvc&amp;quot;: &amp;quot;123&amp;quot;,
+                    &amp;quot;pin&amp;quot;: &amp;quot;9876&amp;quot;,
+                    &amp;quot;dateValidFrom&amp;quot;: &amp;quot;11/20&amp;quot;,
+                    &amp;quot;dateExpire&amp;quot;: &amp;quot;11/23&amp;quot;,
+                    &amp;quot;limitPerMonth&amp;quot;: 5000.0
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+          </cases>
+        </node>
+        <node>
+          <id>
+            80
+          </id>
+          <title>
+            CaS-3 Получение информации о картах данного пользователя
+          </title>
+          <description>
+
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+            <node>
+              <id>
+                176
+              </id>
+              <title>
+                Получение информации о картах данного пользователя
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                ВХОДНЫЕ ПАРАМЕТРЫ:
+
+                HEADER parameters: userCode = userId в формате String (например: &amp;apos;23afd328&amp;apos;)
+
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить GET запрос на URL api/v1/card-service/cards/
+                  </action>
+                  <expected_result>
+                    STATUS CODE 200 ОК + BODY
+                    {
+                    &amp;quot;Cards&amp;quot;: [
+                    {
+                    &amp;quot;type&amp;quot;: &amp;quot;DEBIT&amp;quot;,
+                    &amp;quot;productName&amp;quot;: &amp;quot;GOLD123&amp;quot;,
+                    &amp;quot;isMain&amp;quot;: true,
+                    &amp;quot;number&amp;quot;: 1234567890123456,
+                    &amp;quot;dateValidFrom&amp;quot;: &amp;quot;2022-01-01&amp;quot;,
+                    &amp;quot;dateExpire&amp;quot;: &amp;quot;2025-12-31&amp;quot;,
+                    &amp;quot;limitPerMonth&amp;quot;: 10000,
+                    &amp;quot;status&amp;quot;: &amp;quot;active&amp;quot;,
+                    &amp;quot;id&amp;quot;: &amp;quot;fd34564gw&amp;quot;
+                    },
+                    {
+                    &amp;quot;type&amp;quot;: &amp;quot;CREDIT&amp;quot;,
+                    &amp;quot;productName&amp;quot;: &amp;quot;SILVER456&amp;quot;,
+                    &amp;quot;isMain&amp;quot;: false,
+                    &amp;quot;number&amp;quot;: 9876543210987654,
+                    &amp;quot;dateValidFrom&amp;quot;: &amp;quot;2023-03-15&amp;quot;,
+                    &amp;quot;dateExpire&amp;quot;: &amp;quot;2026-03-14&amp;quot;,
+                    &amp;quot;limitPerMonth&amp;quot;: 5000,
+                    &amp;quot;status&amp;quot;: &amp;quot;active&amp;quot;,
+                    &amp;quot;id&amp;quot;: &amp;quot;dfgfd7fd8g&amp;quot;,
+                    &amp;quot;paymentSystem&amp;quot;: &amp;quot;VISA&amp;quot;
+                    }
+                    ]
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+          </cases>
+        </node>
+        <node>
+          <id>
+            81
+          </id>
+          <title>
+            CaS-4 Обновление лимитов карты клиента
+          </title>
+          <description>
+
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+          </cases>
+        </node>
+        <node>
+          <id>
+            82
+          </id>
+          <title>
+            CaS-5 Изменение статуса карты
+          </title>
+          <description>
+            Ссылка на документацию - https://wiki.astondevs.ru/pages/viewpage.action?pageId=60228246
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+            <node>
+              <id>
+                177
+              </id>
+              <title>
+                [Positive] Блокировка карты авторизованным пользователем
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Передать в Body
+                {
+                statusCardId: 2
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор существующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 200 ОК + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+            <node>
+              <id>
+                178
+              </id>
+              <title>
+                [Positive] Разблокировка карты авторизованным пользователем
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Передать в Body
+                {
+                statusCardId: 1
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор существующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 200 ОК + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+            <node>
+              <id>
+                179
+              </id>
+              <title>
+                [Negative] Блокировка карты неавторизованным пользователем
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Необходимо быть неавторизованным пользователем
+
+                Передать в Body
+                {
+                statusCardId: 2
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                medium
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор существующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 401 unathorize + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+            <node>
+              <id>
+                180
+              </id>
+              <title>
+                [Negative] Разблокировка карты неавторизованным пользователем
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Пользователь должен быть не авторизован
+
+                Передать в Body
+                {
+                statusCardId: 1
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                medium
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                is-not-automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор существующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 401 unathorized + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+            <node>
+              <id>
+                181
+              </id>
+              <title>
+                [Negative] Передача невалидного статуса для карты
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Передать в Body
+                {
+                statusCardId: 4 (невалидный параметр)
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                medium
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                is-not-automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор существующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 400 Bad request + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+            <node>
+              <id>
+                182
+              </id>
+              <title>
+                [Negative] Передача несуществующего id карты в URI
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Передать в Body
+                {
+                statusCardId: 2
+                }
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Выполнить запрос PATCH на URL /card-service/cards/{cardId}
+                    где cardId - идентификатор !! несуществующей карты
+                  </action>
+                  <expected_result>
+                    STATUS CODE 404 Not found + Body
+                    {
+                    cardId,
+                    message
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+          </cases>
+        </node>
+        <node>
+          <id>
+            83
+          </id>
+          <title>
+            CaS-9 Просмотр информации по карточному продукту
+          </title>
+          <description>
+
+          </description>
+          <preconditions>
+
+          </preconditions>
+          <suites>
+          </suites>
+          <cases>
+            <node>
+              <id>
+                183
+              </id>
+              <title>
+                Просмотр информации по карточному продукту
+              </title>
+              <description>
+
+              </description>
+              <preconditions>
+                Входные параметры:
+
+                HEADER parameters: product_id, тип данных в формате uuid (0f586488-3050-47f7-a2a9-66119ac2fba4)
+              </preconditions>
+              <postconditions>
+
+              </postconditions>
+              <priority>
+                high
+              </priority>
+              <severity>
+                normal
+              </severity>
+              <type>
+                other
+              </type>
+              <behavior>
+                undefined
+              </behavior>
+              <automation>
+                automated
+              </automation>
+              <status>
+                actual
+              </status>
+              <is_flaky>
+                no
+              </is_flaky>
+              <layer>
+                unknown
+              </layer>
+              <milestone>
+
+              </milestone>
+              <custom_fields>
+              </custom_fields>
+              <steps_type>
+                classic
+              </steps_type>
+              <steps>
+                <node>
+                  <position>
+                    1
+                  </position>
+                  <action>
+                    Отправить GET api/v1/card-service/product-cards?productId={productId}
+                  </action>
+                  <expected_result>
+                    HTTP Status: 200 OK
+                    {
+                    &amp;quot;productId&amp;quot;: &amp;quot;ABC123&amp;quot;,
+                    &amp;quot;productName&amp;quot;: &amp;quot;Example Product&amp;quot;,
+                    &amp;quot;isActive&amp;quot;: true,
+                    &amp;quot;partner&amp;quot;: &amp;quot;XYZ Company&amp;quot;,
+                    &amp;quot;purchaseFee&amp;quot;: 19.99,
+                    &amp;quot;maintenanceFee&amp;quot;: 2.99,
+                    &amp;quot;cashback&amp;quot;: 0.05,
+                    &amp;quot;loyaltyProgram&amp;quot;: &amp;quot;Travel&amp;quot;,
+                    &amp;quot;currencyName&amp;quot;: &amp;quot;USD&amp;quot;,
+                    &amp;quot;paymentSystem&amp;quot;: &amp;quot;MASTERCARD&amp;quot;,
+                    &amp;quot;productType&amp;quot; : &amp;quot;CREDIT&amp;quot;
+                    }
+                  </expected_result>
+                  <data>
+
+                  </data>
+                  <steps>
+                  </steps>
+                </node>
+              </steps>
+              <tags>
+              </tags>
+              <params>
+              </params>
+              <is_muted>
+                no
+              </is_muted>
+            </node>
+          </cases>
+        </node>
+      </suites>
+      <cases>
+      </cases>
+    </node>
+  </suites>
+</nodes>
