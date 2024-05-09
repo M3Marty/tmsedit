@@ -26,6 +26,7 @@ public final class TMSEditController {
 	private HistoryStack history;
 
 	private DataSource dataSource;
+	private Suite suite;
 
 	private Parser parser;
 
@@ -54,7 +55,7 @@ public final class TMSEditController {
 
 	private void setDriver(Parser parser) {
 		history.happen(new LoggedHistoryEvent<Parser>(
-				this.parser, "Choose driver " + parser.getClass().getSimpleName(),
+				this.parser, parser, "Choose driver " + parser.getClass().getSimpleName(),
 				() -> {
 					this.parser = parser;
 					driver.setText(parser.getClass().getSimpleName());
@@ -75,19 +76,61 @@ public final class TMSEditController {
 		return status.getScene().getWindow();
 	}
 
+	private void addToSuiteNodeChildren(TreeItem<Suite> node) {
+		for (var suite : node.getValue().getSuites()) {
+			var subNode = new TreeItem<>(suite);
+			addToSuiteNodeChildren(subNode);
+			node.getChildren().add(subNode);
+		}
+
+		for (var test : node.getValue().getCases()) {
+			var subNode = new TreeItem<Suite>(test);
+			node.getChildren().add(subNode);
+		}
+
+		node.setExpanded(true);
+	}
+
 	private void setWorkingSuite(Suite suite) {
-		logger.log(DEBUG, suite);
+		if (suite == null) {
+			this.projectView.setRoot(null);
+			return;
+		}
+		logger.log(DEBUG, suite.toStringVerbose());
+
+		this.suite = suite;
+		var root = new TreeItem<>(suite);
+		addToSuiteNodeChildren(root);
+		root.setExpanded(true);
+		this.projectView.setRoot(root);
 	}
 
 	private void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
 		logger.log(INFO, "Set source: %s", dataSource);
+		this.dataSource = dataSource;
+		this.source.setText(Optional.ofNullable(dataSource).map(DataSource::toString).orElse("None"));
 	}
 
-	private void openSuite(Parser parser) throws IOException {
-		logger.log(INFO, "Open suite using %s", parser.getClass().getSimpleName());
-		Suite suite = parser.read(dataSource.get());
-		setWorkingSuite(suite);
+	private void openSuite(DataSource source, Parser parser) throws IOException {
+		Suite suite = parser.read(source.get());
+
+		history.happen(new LoggedHistoryEvent<Object[]>(
+				new Object[]{ this.dataSource, this.suite },
+				new Object[]{ source, suite },
+				"Change suite to " + suite.getTitle(),
+				() -> {
+					setDataSource(source);
+					setWorkingSuite(suite);
+				},
+				data -> {
+					setDataSource((DataSource) data[0]);
+					setWorkingSuite((Suite) data[1]);
+				},
+				data -> {
+					logger.log(INFO, "Open suite using %s from %s",
+							parser.getClass().getSimpleName(), data[0]);
+				}
+		));
 	}
 
 	@FXML
@@ -99,8 +142,7 @@ public final class TMSEditController {
 			File file = chooser.showOpenDialog(getWindow());
 			if (file == null)
 				return;
-			setDataSource(new FileSource(file));
-			openSuite(parser);
+			openSuite(new FileSource(file), this.parser);
 		} catch (Exception e) {
 			logger.log(ERROR, e);
 			new Alert(Alert.AlertType.ERROR, "File can't be parsed with "

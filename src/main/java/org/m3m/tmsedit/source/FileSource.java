@@ -5,7 +5,6 @@ import lombok.*;
 import java.io.*;
 
 @Getter
-@ToString
 @AllArgsConstructor
 public class FileSource implements DataSource {
 
@@ -19,5 +18,10 @@ public class FileSource implements DataSource {
 	@Override
 	public InputStream get() throws FileNotFoundException {
 		return new FileInputStream(source);
+	}
+
+	@Override
+	public String toString() {
+		return source.getName();
 	}
 }
