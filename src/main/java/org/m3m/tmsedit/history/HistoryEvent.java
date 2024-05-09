@@ -44,6 +44,8 @@ public class HistoryEvent<T> implements Iterable<HistoryEvent<?>> {
 	}
 
 	public HistoryEvent<?> primaryFollowing() {
+		if (following.isEmpty())
+			return null;
 		return following.getFirst();
 	}
 

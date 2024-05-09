@@ -16,4 +16,12 @@ public class SkippedHistoryEvent<T> extends LoggedHistoryEvent<T> {
 		super.addFollowing(event);
 		event.setParent(getParent());
 	}
+
+	@Override
+	public void redo() {
+		super.redo();
+
+		if (primaryFollowing() != null)
+			primaryFollowing().redo();
+	}
 }
