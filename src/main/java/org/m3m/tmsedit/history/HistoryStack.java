@@ -15,7 +15,6 @@ public class HistoryStack {
 
 	public void happen(HistoryEvent<?> event) {
 		currentState.addFollowing(event);
-		event.setParent(currentState);
 		redo();
 	}
 

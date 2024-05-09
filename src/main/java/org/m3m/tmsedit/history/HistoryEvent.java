@@ -40,6 +40,7 @@ public class HistoryEvent<T> implements Iterable<HistoryEvent<?>> {
 
 	public void addFollowing(HistoryEvent<?> event) {
 		this.following.addFirst(event);
+		event.setParent(this);
 	}
 
 	public HistoryEvent<?> primaryFollowing() {
