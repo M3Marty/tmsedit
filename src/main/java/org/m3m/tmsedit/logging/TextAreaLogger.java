@@ -38,6 +38,7 @@ public class TextAreaLogger implements System.Logger {
 				String message = toLog.remove();
 				System.out.print(message);
 				logArea.appendText(message);
+				logArea.setScrollTop(1);
 			}
 		}
 	}
