@@ -5,7 +5,6 @@ import lombok.*;
 import java.util.*;
 
 @Getter @Setter
-@ToString(callSuper = true)
 public class TestCase extends Suite {
 
 	private String postCondition;
@@ -25,6 +24,22 @@ public class TestCase extends Suite {
 
 	public TestCase(Integer id) {
 		super(id);
+	}
+
+	public String toStringVerbose() {
+		return "TestCase{" +
+				"postCondition='" + postCondition + '\'' +
+				", isFlaky=" + isFlaky +
+				", isAutomated=" + isAutomated +
+				", isMuted=" + isMuted +
+				", priority=" + priority +
+				", severity=" + severity +
+				", behavior=" + behavior +
+				", type=" + type +
+				", status=" + status +
+				", layer=" + layer +
+				", steps=" + steps +
+				'}';
 	}
 
 	public enum Priority {

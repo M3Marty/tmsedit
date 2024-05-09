@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.util.*;
 
-@ToString
 public class Suite {
 
 	@Getter
@@ -42,5 +41,21 @@ public class Suite {
 
 	public void addCase(TestCase testCase, int index) {
 		this.cases.add(index, testCase);
+	}
+
+	@Override
+	public String toString() {
+		return title;
+	}
+
+	public String toStringVerbose() {
+		return "Suite{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", preCondition='" + preCondition + '\'' +
+				", suites=" + suites +
+				", cases=" + cases +
+				'}';
 	}
 }
