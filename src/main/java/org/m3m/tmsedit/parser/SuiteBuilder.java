@@ -1,4 +1,4 @@
-package org.m3m.tmsedit.parsers;
+package org.m3m.tmsedit.parser;
 
 import lombok.AllArgsConstructor;
 import org.m3m.tmsedit.documentation.*;
@@ -59,7 +59,7 @@ public class SuiteBuilder {
 		return testCase;
 	}
 
-	Suite parseSuite(Node node) {
+	public Suite parseSuite(Node node) {
 		Suite suite = new Suite(provider.getId(node).orElse(null));
 		suite.setTitle(provider.getSuiteTitle(node));
 		suite.setDescription(provider.getSuiteDescription(node));

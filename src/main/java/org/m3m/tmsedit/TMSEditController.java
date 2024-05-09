@@ -9,7 +9,7 @@ import javafx.stage.Window;
 import org.m3m.tmsedit.history.*;
 import org.m3m.tmsedit.logging.TextAreaLogger;
 import org.m3m.tmsedit.documentation.Suite;
-import org.m3m.tmsedit.parsers.Parser;
+import org.m3m.tmsedit.parser.Parser;
 import org.m3m.tmsedit.parsers.XmlQaseParser;
 import org.m3m.tmsedit.source.DataSource;
 import org.m3m.tmsedit.source.FileSource;
@@ -28,6 +28,9 @@ public final class TMSEditController {
 	private DataSource dataSource;
 
 	private Parser parser;
+
+	private Object objectBuffer;
+	private String stringBuffer;
 
 	@FXML
 	public TextArea logField;

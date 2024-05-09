@@ -1,6 +1,7 @@
 package org.m3m.tmsedit.parsers;
 
 import org.m3m.tmsedit.documentation.*;
+import org.m3m.tmsedit.parser.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -24,7 +25,6 @@ public final class XmlQaseParser implements FileParser, ParserDataProvider {
 			var root = doc.getDocumentElement();
 			root.normalize();
 			Node suiteNode = root.getElementsByTagName("node").item(0);
-			log.log(TRACE, "Node: %s %s", suiteNode.getNodeName(), suiteNode);
 			return new SuiteBuilder(this).parseSuite(suiteNode);
 		} catch (ParserConfigurationException | SAXException e) {
 			throw new RuntimeException(e);

@@ -1,4 +1,4 @@
-package org.m3m.tmsedit.parsers;
+package org.m3m.tmsedit.parser;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
