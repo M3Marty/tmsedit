@@ -9,4 +9,6 @@ module org.m3m.tmsedit {
 	exports org.m3m.tmsedit.logging;
 	exports org.m3m.tmsedit.source;
 	opens org.m3m.tmsedit.source to javafx.fxml;
+	exports org.m3m.tmsedit.history;
+	opens org.m3m.tmsedit.history to javafx.fxml;
 }

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import org.m3m.tmsedit.editors.*;
 import org.m3m.tmsedit.history.*;
 import org.m3m.tmsedit.logging.TextAreaLogger;
 import org.m3m.tmsedit.documentation.Suite;
@@ -33,6 +34,8 @@ public final class TMSEditController {
 	private Object objectBuffer;
 	private String stringBuffer;
 
+	private EditorMode editorMode;
+
 	@FXML
 	public TextArea logField;
 	@FXML
@@ -51,10 +54,32 @@ public final class TMSEditController {
 		history = new HistoryStack(historyId);
 
 		setDriverXmlQase();
+		setModePlain();
 	}
 
+	@Undo(Undo.Type.SKIPPED)
+	private void setEditorMode(EditorMode mode) {
+		history.happen(new SkippedHistoryEvent<EditorMode>(
+				this.editorMode, mode, "Choose mode " + mode.getClass().getSimpleName(),
+				() -> {
+					this.editorMode = mode;
+					this.mode.setText(this.editorMode.getClass().getSimpleName());
+				},
+				previousMode -> {
+					this.editorMode = previousMode;
+					this.mode.setText(Optional.ofNullable(editorMode)
+							.map(m -> m.getClass().getSimpleName()).orElse("None"));
+				},
+				editorMode -> {
+					logger.log(INFO, "Choose mode %s", Optional.ofNullable(editorMode)
+							.map(m -> m.getClass().getSimpleName()).orElse("None"));
+				}
+		));
+	}
+
+	@Undo(Undo.Type.SKIPPED)
 	private void setDriver(Parser parser) {
-		history.happen(new LoggedHistoryEvent<Parser>(
+		history.happen(new SkippedHistoryEvent<Parser>(
 				this.parser, parser, "Choose driver " + parser.getClass().getSimpleName(),
 				() -> {
 					this.parser = parser;
@@ -103,6 +128,7 @@ public final class TMSEditController {
 		addToSuiteNodeChildren(root);
 		root.setExpanded(true);
 		this.projectView.setRoot(root);
+		this.status.setText("Sync");
 	}
 
 	private void setDataSource(DataSource dataSource) {
@@ -111,6 +137,7 @@ public final class TMSEditController {
 		this.source.setText(Optional.ofNullable(dataSource).map(DataSource::toString).orElse("None"));
 	}
 
+	@Undo
 	private void openSuite(DataSource source, Parser parser) throws IOException {
 		Suite suite = parser.read(source.get());
 
@@ -183,12 +210,12 @@ public final class TMSEditController {
 	private void cloneChosen(ActionEvent actionEvent) {}
 
 	@FXML
-	public void showHistory(ActionEvent actionEvent) {}
+	private void showHistory(ActionEvent actionEvent) {}
 
 	private double sideDividerPosition;
 
 	@FXML
-	public void toggleProjectTreeView(ActionEvent actionEvent) {
+	private void toggleProjectTreeView(ActionEvent actionEvent) {
 		projectViewPane.setVisible(!projectViewPane.isVisible());
 		logger.log(INFO, "Project view toggle: %b",
 				projectViewPane.isVisible());
@@ -205,7 +232,7 @@ public final class TMSEditController {
 	private double logDivider;
 
 	@FXML
-	public void toggleLogView(ActionEvent actionEvent) {
+	private void toggleLogView(ActionEvent actionEvent) {
 		logField.setVisible(!logField.isVisible());
 		logger.setFlushing(logField.isVisible());
 		logger.log(INFO, "Log view toggle: %b", logField.isVisible());
@@ -223,19 +250,26 @@ public final class TMSEditController {
 	}
 
 	@FXML
-	public void newFileDialog(ActionEvent actionEvent) {}
+	private void newFileDialog(ActionEvent actionEvent) {}
 
 	@FXML
-	public void newTestCase(ActionEvent actionEvent) {}
+	private void newTestCase(ActionEvent actionEvent) {}
 
 	@FXML
-	public void newSuite(ActionEvent actionEvent) {}
+	private void newSuite(ActionEvent actionEvent) {}
 
 	@FXML
-	public void setModeApiTestCases(ActionEvent actionEvent) {}
-
-	@FXML
-	public void setDriverXmlQase() {
+	private void setDriverXmlQase() {
 		setDriver(new XmlQaseParser());
+	}
+
+	@FXML
+	private void setModePlain() {
+		setEditorMode(new PlainEditor());
+	}
+
+	@FXML
+	private void setModeRestApi(ActionEvent actionEvent) {
+		setEditorMode(new RestApiMode());
 	}
 }

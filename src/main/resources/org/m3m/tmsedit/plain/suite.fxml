@@ -1,0 +1,24 @@
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../style.css"
+      fx:controller="org.m3m.tmsedit.editors.PlainSuiteEditor">
+  <HBox>
+    <Label fx:id="idLabel"/>
+    <TextField fx:id="nameLabel"/>
+  </HBox>
+  <HBox>
+    <VBox>
+      <Label text="Description"/>
+      <TextArea fx:id="descriptionLabel"/>
+    </VBox>
+    <VBox>
+      <Label text="Precondition"/>
+      <TextArea fx:id="preconditionLabel"/>
+    </VBox>
+  </HBox>
+</VBox>

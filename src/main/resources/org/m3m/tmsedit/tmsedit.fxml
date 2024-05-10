@@ -42,7 +42,8 @@
       </Menu>
       <Menu text="Options">
         <Menu text="Mode">
-          <MenuItem text="Api Test Cases" onAction="#setModeApiTestCases"/>
+          <MenuItem text="Plain" onAction="#setModePlain"/>
+          <MenuItem text="Rest Api" onAction="#setModeRestApi"/>
         </Menu>
         <Menu text="Driver">
           <MenuItem text="Xml Qase" onAction="#setDriverXmlQase"/>
