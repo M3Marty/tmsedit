@@ -19,7 +19,7 @@
 
 
 /* Pane */
-.pane-grid{
+.pane-grid, .v-box, .h-box, .split-pane{
 	-fx-background-color: #2D2D30;
     background-color: #2D2D30;
 }

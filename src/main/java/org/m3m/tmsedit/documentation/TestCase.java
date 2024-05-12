@@ -42,37 +42,92 @@ public class TestCase extends Suite {
 				'}';
 	}
 
+	@AllArgsConstructor
 	public enum Priority {
-		HIGH, MEDIUM, LOW, NOT_SET
+		HIGH("High"), MEDIUM("Medium"),
+		LOW("Low"), NOT_SET("Not set");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 
+	@AllArgsConstructor
 	public enum Severity {
-		BLOCKER, CRITICAL, MAJOR, NORMAL, MINOR, TRIVIAL, NOT_SET
+		BLOCKER("Blocker"), CRITICAL("Critical"),
+		MAJOR("Major"), NORMAL("Normal"),
+		MINOR("Minor"), TRIVIAL("Trivial"),
+		NOT_SET("Not set");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 
+	@AllArgsConstructor
 	public enum Behavior {
-		POSITIVE, NEGATIVE, DESTRUCTIVE, UNDEFINED
+		POSITIVE("Positive"), NEGATIVE("Negative"),
+		DESTRUCTIVE("Destructive"), UNDEFINED("Undefined");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 
+	@AllArgsConstructor
 	public enum Type {
-		FUNCTIONAL,
-		SMOKE,
-		REGRESSION,
-		SECURITY,
-		USABILITY,
-		PERFORMANCE,
-		ACCEPTANCE,
-		COMPATIBILITY,
-		INTEGRATION,
-		EXPLORATORY,
-		OTHER
+		FUNCTIONAL("Functional"),
+		SMOKE("Smoke"),
+		REGRESSION("Regression"),
+		SECURITY("Security"),
+		USABILITY("Usability"),
+		PERFORMANCE("Performance"),
+		ACCEPTANCE("Acceptance"),
+		COMPATIBILITY("Compatibility"),
+		INTEGRATION("Integration"),
+		EXPLORATORY("Exploratory"),
+		OTHER("Other");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 
+	@AllArgsConstructor
 	public enum Status {
-		ACTUAL, DRAFT, DEPRECATED
+		ACTUAL("Actual"), DRAFT("Draft"),
+		DEPRECATED("Deprecated");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 
+	@AllArgsConstructor
 	public enum Layer {
-		UNIT, API, E2E, UNKNOWN
+		UNIT("Unit"), API("Api"),
+		E2E("E2E"), UNKNOWN("Unknown");
+
+		private final String stringValue;
+
+		@Override
+		public String toString() {
+			return stringValue;
+		}
 	}
 }

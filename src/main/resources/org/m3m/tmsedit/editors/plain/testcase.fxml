@@ -1,0 +1,84 @@
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ChoiceBox?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../style.css"
+      fx:controller="org.m3m.tmsedit.editors.PlainTestCaseEditor">
+  <HBox spacing="10" alignment="CENTER_LEFT" maxHeight="34">
+    <padding>
+      <Insets left="10" top="10" right="10" bottom="10"/>
+    </padding>
+    <HBox>
+      <Label fx:id="idLabel">
+        <font>
+          <Font name="System Bold" size="18"/>
+        </font>
+      </Label>
+      <TextField fx:id="titleField" prefWidth="400">
+        <font>
+          <Font name="System Bold"/>
+        </font>
+      </TextField>
+    </HBox>
+    <Region/>
+    <HBox>
+      <CheckBox text="Flaky" fx:id="isFlakyBox"/>
+      <CheckBox text="Automated" fx:id="isAutomatedBox"/>
+      <CheckBox text="Muted" fx:id="isMutedBox"/>
+    </HBox>
+  </HBox>
+  <GridPane>
+    <Label GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="0" text="Description">
+      <font>
+        <Font size="13"/>
+      </font>
+    </Label>
+    <TextArea GridPane.columnIndex="0" GridPane.columnSpan="4"
+              GridPane.rowIndex="1" GridPane.rowSpan="3"
+              fx:id="descriptionArea" maxHeight="90"/>
+    <Label GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="0" text="Options">
+      <font>
+        <Font size="13"/>
+      </font>
+    </Label>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="1" text="Priority:"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="1" fx:id="priorityChoice"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="1" text="Severity:"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="1" fx:id="severityChoice"/>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="2" text="Layer:"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="2" fx:id="layerChoice"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="2" text="Type:"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="2" fx:id="typeChoice"/>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="3" text="Behavior:"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="behaviorChoice"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="3" text="Status:"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="3" fx:id="statusChoice"/>
+    <Label GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="4" text="Pre-Condition">
+      <font>
+        <Font size="13"/>
+      </font>
+    </Label>
+    <TextArea GridPane.columnIndex="0" GridPane.columnSpan="4"
+              GridPane.rowIndex="5" GridPane.rowSpan="3"
+              fx:id="preconditionArea" maxHeight="90"/>
+    <Label GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4" text="Post-Condition">
+      <font>
+        <Font size="13"/>
+      </font>
+    </Label>
+    <TextArea GridPane.columnIndex="4" GridPane.columnSpan="4"
+              GridPane.rowIndex="5" GridPane.rowSpan="3"
+              fx:id="postconditionArea" maxHeight="90"/>
+  </GridPane>
+</VBox>

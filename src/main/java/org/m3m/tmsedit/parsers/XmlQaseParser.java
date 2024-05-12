@@ -70,7 +70,7 @@ public final class XmlQaseParser implements FileParser, ParserDataProvider {
 
 	@Override
 	public String getSuitePreCondition(Node node) {
-		return findNodeTextContent(node, "precondition").orElse("");
+		return findNodeTextContent(node, "preconditions").orElse("");
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public final class XmlQaseParser implements FileParser, ParserDataProvider {
 
 	@Override
 	public String getCasePostCondition(Node node) {
-		return findNodeTextContent(node, "postcondition").orElse("");
+		return findNodeTextContent(node, "postconditions").orElse("");
 	}
 
 	@Override

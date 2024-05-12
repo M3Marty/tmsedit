@@ -1,11 +1,13 @@
 package org.m3m.tmsedit;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import org.m3m.tmsedit.documentation.TestCase;
 import org.m3m.tmsedit.editors.*;
 import org.m3m.tmsedit.history.*;
 import org.m3m.tmsedit.logging.TextAreaLogger;
@@ -34,40 +36,70 @@ public final class TMSEditController {
 	private Object objectBuffer;
 	private String stringBuffer;
 
-	private EditorMode editorMode;
+	private Editor editorMode;
 
 	@FXML
 	public TextArea logField;
 	@FXML
-	public Label status, source, mode, historyId, currentFocus, driver;
+	public Label statusLabel, sourceLabel, editorLabel, historyIdLabel, currentFocusLabel, driverLabel, modeLabel;
 	@FXML
-	public Parent content, projectViewPane;
+	public Parent projectViewPane;
+	private Parent contentPane;
 	public SplitPane sideSplit, mainSplit;
 	@FXML
 	private TreeView<Suite> projectView;
+
+	private void setContent(Parent with) {
+		if (contentPane == with)
+			return;
+
+		mainSplit.getItems().remove(0);
+		mainSplit.getItems().add(0, with);
+
+		this.contentPane = with;
+	}
 
 	@FXML
 	public void initialize() {
 		logger = new TextAreaLogger(logField);
 		toggleLogView(null);
 
-		history = new HistoryStack(historyId);
+		history = new HistoryStack(historyIdLabel);
 
 		setDriverXmlQase();
-		setModePlain();
+		setEditorPlain();
+
+		Platform.runLater(() ->
+				projectView.getScene()
+						.focusOwnerProperty()
+						.addListener((observableValue, previousFocus, newFocus) ->
+								currentFocusLabel.setText(newFocus.getId())
+						));
+
+
+		projectView.getSelectionModel()
+				.selectedItemProperty()
+				.addListener((observable, oldValue, value) -> {
+					if (value.getValue() instanceof TestCase testCase) {
+						setContent(editorMode.getTestCaseEditor().with(testCase));
+					}
+					else {
+						setContent(editorMode.with(value.getValue()));
+					}
+				});
 	}
 
 	@Undo(Undo.Type.SKIPPED)
-	private void setEditorMode(EditorMode mode) {
-		history.happen(new SkippedHistoryEvent<EditorMode>(
+	private void setEditorMode(Editor mode) {
+		history.happen(new SkippedHistoryEvent<Editor>(
 				this.editorMode, mode, "Choose mode " + mode.getClass().getSimpleName(),
 				() -> {
 					this.editorMode = mode;
-					this.mode.setText(this.editorMode.getClass().getSimpleName());
+					this.editorLabel.setText(this.editorMode.getClass().getSimpleName());
 				},
 				previousMode -> {
 					this.editorMode = previousMode;
-					this.mode.setText(Optional.ofNullable(editorMode)
+					this.editorLabel.setText(Optional.ofNullable(editorMode)
 							.map(m -> m.getClass().getSimpleName()).orElse("None"));
 				},
 				editorMode -> {
@@ -83,11 +115,11 @@ public final class TMSEditController {
 				this.parser, parser, "Choose driver " + parser.getClass().getSimpleName(),
 				() -> {
 					this.parser = parser;
-					driver.setText(parser.getClass().getSimpleName());
+					driverLabel.setText(parser.getClass().getSimpleName());
 				},
 				previousParser -> {
 					this.parser = previousParser;
-					this.driver.setText(Optional.ofNullable(this.parser)
+					this.driverLabel.setText(Optional.ofNullable(this.parser)
 							.map(v -> v.getClass().getSimpleName()).orElse("None"));
 				},
 				value -> {
@@ -98,9 +130,10 @@ public final class TMSEditController {
 	}
 
 	private Window getWindow() {
-		return status.getScene().getWindow();
+		return statusLabel.getScene().getWindow();
 	}
 
+	@UndoCalled("openSuite")
 	private void addToSuiteNodeChildren(TreeItem<Suite> node) {
 		for (var suite : node.getValue().getSuites()) {
 			var subNode = new TreeItem<>(suite);
@@ -116,6 +149,7 @@ public final class TMSEditController {
 		node.setExpanded(true);
 	}
 
+	@UndoCalled("openSuite")
 	private void setWorkingSuite(Suite suite) {
 		if (suite == null) {
 			this.projectView.setRoot(null);
@@ -128,13 +162,14 @@ public final class TMSEditController {
 		addToSuiteNodeChildren(root);
 		root.setExpanded(true);
 		this.projectView.setRoot(root);
-		this.status.setText("Sync");
+		this.statusLabel.setText("Sync");
 	}
 
+	@UndoCalled("openSuite")
 	private void setDataSource(DataSource dataSource) {
 		logger.log(INFO, "Set source: %s", dataSource);
 		this.dataSource = dataSource;
-		this.source.setText(Optional.ofNullable(dataSource).map(DataSource::toString).orElse("None"));
+		this.sourceLabel.setText(Optional.ofNullable(dataSource).map(DataSource::toString).orElse("None"));
 	}
 
 	@Undo
@@ -160,6 +195,15 @@ public final class TMSEditController {
 		));
 	}
 
+	private void leftOpened() {
+		// TODO
+	}
+
+
+	//////////
+	// File //
+	//////////
+
 	@FXML
 	private void openFileDialog(ActionEvent actionEvent) {
 		var chooser = new FileChooser();
@@ -182,10 +226,14 @@ public final class TMSEditController {
 	}
 
 	@FXML
-	private void saveFile(ActionEvent actionEvent) {}
+	private void saveToSource(ActionEvent actionEvent) {}
 
 	@FXML
-	private void saveFileDialog(ActionEvent actionEvent) {}
+	private void saveDialog(ActionEvent actionEvent) {}
+
+	//////////
+	// Edit //
+	//////////
 
 	@FXML
 	private void undo(ActionEvent actionEvent) {
@@ -206,11 +254,29 @@ public final class TMSEditController {
 	@FXML
 	private void paste(ActionEvent actionEvent) {}
 
+
+	////////////////
+	// Navigation //
+	////////////////
+
+	@FXML
+	private void focusOnProjectView(ActionEvent actionEvent) {
+		projectView.requestFocus();
+	}
+
+	///////////
+	// Tools //
+	///////////
+
 	@FXML
 	private void cloneChosen(ActionEvent actionEvent) {}
 
 	@FXML
 	private void showHistory(ActionEvent actionEvent) {}
+
+	//////////
+	// View //
+	//////////
 
 	private double sideDividerPosition;
 
@@ -222,6 +288,7 @@ public final class TMSEditController {
 		if (projectViewPane.isVisible()) {
 			sideSplit.getItems().add(0, projectViewPane);
 			sideSplit.setDividerPosition(0, sideDividerPosition);
+			projectView.requestFocus();
 		}
 		else {
 			sideDividerPosition = sideSplit.getDividerPositions()[0];
@@ -242,6 +309,7 @@ public final class TMSEditController {
 					mainSplit.getDividerPositions().length - 1,
 					logDivider
 			);
+			logField.requestFocus();
 		}
 		else {
 			logDivider = mainSplit.getDividerPositions()[mainSplit.getDividerPositions().length - 1];
@@ -264,12 +332,12 @@ public final class TMSEditController {
 	}
 
 	@FXML
-	private void setModePlain() {
-		setEditorMode(new PlainEditor());
+	private void setEditorPlain() {
+		setEditorMode(new PlainEditor(modeLabel));
 	}
 
 	@FXML
-	private void setModeRestApi(ActionEvent actionEvent) {
-		setEditorMode(new RestApiMode());
+	private void setEditorRestApi(ActionEvent actionEvent) {
+		setEditorMode(new RestApiEditor(modeLabel));
 	}
 }

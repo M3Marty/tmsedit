@@ -1,0 +1,51 @@
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../style.css"
+      fx:controller="org.m3m.tmsedit.editors.PlainSuiteEditor">
+  <HBox spacing="10" alignment="CENTER_LEFT" maxHeight="34">
+    <padding>
+      <Insets left="10" top="10" right="10" bottom="10"/>
+    </padding>
+    <Label fx:id="idLabel">
+      <font>
+        <Font name="System Bold" size="18"/>
+      </font>
+    </Label>
+    <TextField fx:id="titleField" prefWidth="400">
+      <font>
+        <Font name="System Bold"/>
+      </font>
+    </TextField>
+  </HBox>
+  <Separator/>
+  <HBox spacing="20">
+    <padding>
+      <Insets left="10" top="10" right="10" bottom="10"/>
+    </padding>
+    <VBox>
+      <Label text="Description:">
+        <font>
+          <Font size="13"/>
+        </font>
+      </Label>
+      <TextArea fx:id="descriptionArea" wrapText="true" prefHeight="180"/>
+    </VBox>
+    <VBox>
+      <Label text="Pre-Condition:">
+        <font>
+          <Font size="13"/>
+        </font>
+      </Label>
+      <TextArea fx:id="preconditionArea" wrapText="true" prefHeight="180"/>
+    </VBox>
+  </HBox>
+</VBox>

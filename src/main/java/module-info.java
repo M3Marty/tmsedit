@@ -1,14 +1,17 @@
 module org.m3m.tmsedit {
+	requires static lombok;
+
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires java.xml;
-	requires static lombok;
 
-	opens org.m3m.tmsedit to javafx.fxml;
-	exports org.m3m.tmsedit;
+	opens org.m3m.tmsedit to javafx.fxml, javafx.graphics;
+	opens org.m3m.tmsedit.source to javafx.fxml;
+	opens org.m3m.tmsedit.history to javafx.fxml;
+
 	exports org.m3m.tmsedit.logging;
 	exports org.m3m.tmsedit.source;
-	opens org.m3m.tmsedit.source to javafx.fxml;
 	exports org.m3m.tmsedit.history;
-	opens org.m3m.tmsedit.history to javafx.fxml;
+	exports org.m3m.tmsedit.editors;
+	exports org.m3m.tmsedit.documentation;
 }
