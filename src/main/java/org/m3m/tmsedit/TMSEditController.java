@@ -3,8 +3,11 @@ package org.m3m.tmsedit;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.m3m.tmsedit.documentation.TestCase;
@@ -12,6 +15,7 @@ import org.m3m.tmsedit.editors.*;
 import org.m3m.tmsedit.history.*;
 import org.m3m.tmsedit.logging.TextAreaLogger;
 import org.m3m.tmsedit.documentation.Suite;
+import org.m3m.tmsedit.navigation.Navigation;
 import org.m3m.tmsedit.parser.Parser;
 import org.m3m.tmsedit.parsers.XmlQaseParser;
 import org.m3m.tmsedit.source.DataSource;
@@ -19,6 +23,7 @@ import org.m3m.tmsedit.source.FileSource;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.lang.System.Logger.Level.*;
 
@@ -49,6 +54,8 @@ public final class TMSEditController {
 	@FXML
 	private TreeView<Suite> projectView;
 
+	private Function<KeyEvent, Object> navigaiton;
+
 	private void setContent(Parent with) {
 		if (contentPane == with)
 			return;
@@ -60,6 +67,7 @@ public final class TMSEditController {
 	}
 
 	@FXML
+	@SuppressWarnings("unchecked")
 	public void initialize() {
 		logger = new TextAreaLogger(logField);
 		toggleLogView(null);
@@ -69,19 +77,60 @@ public final class TMSEditController {
 		setDriverXmlQase();
 		setEditorPlain();
 
-		Platform.runLater(() ->
-				projectView.getScene()
-						.focusOwnerProperty()
-						.addListener((observableValue, previousFocus, newFocus) ->
-								currentFocusLabel.setText(newFocus.getId())
-						));
+		Platform.runLater(() -> {
+			projectView.getScene()
+					.focusOwnerProperty()
+					.addListener((observableValue, previousFocus, newFocus) -> {
+						currentFocusLabel.setText(newFocus.getId());
+						if (newFocus.getId().equals("projectView"))
+							modeLabel.setText("View");
+						else
+							modeLabel.setText("Edit");
+					});
+			projectView.getScene()
+					.setOnKeyReleased(e -> {
+						if (e.getCode() == KeyCode.ESCAPE) {
+							currentFocusLabel.requestFocus();
+							currentFocusLabel.setText("No Focus");
+							navigaiton = editorMode.getNavigationOf(contentPane);
+							modeLabel.setText(navigaiton.toString());
+							e.consume();
+							return;
+						}
+
+						if (navigaiton == null) {
+							return;
+						}
+
+						Object result = navigaiton.apply(e);
+						if (result == null) {
+							navigaiton = null;
+							projectView.requestFocus();
+							e.consume();
+							throw new IllegalStateException("No such navigation " + e);
+						}
+
+						if (result instanceof Navigation f) {
+							navigaiton = f;
+							modeLabel.setText(navigaiton.toString());
+							e.consume();
+							return;
+						}
+
+						if (result instanceof Node n) {
+							n.requestFocus();
+							e.consume();
+							return;
+						}
+					});
+		});
 
 
 		projectView.getSelectionModel()
 				.selectedItemProperty()
 				.addListener((observable, oldValue, value) -> {
 					if (value.getValue() instanceof TestCase testCase) {
-						setContent(editorMode.getTestCaseEditor().with(testCase));
+						setContent(editorMode.with(testCase));
 					}
 					else {
 						setContent(editorMode.with(value.getValue()));

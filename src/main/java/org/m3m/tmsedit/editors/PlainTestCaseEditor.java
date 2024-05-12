@@ -3,9 +3,12 @@ package org.m3m.tmsedit.editors;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import org.m3m.tmsedit.documentation.TestCase;
+import org.m3m.tmsedit.navigation.Navigation;
 
 import java.util.LinkedList;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class PlainTestCaseEditor implements TestCaseEditor {
@@ -66,7 +69,46 @@ public class PlainTestCaseEditor implements TestCaseEditor {
 		behaviorChoice.setValue(testCase.getBehavior());
 		statusChoice.setValue(testCase.getStatus());
 
+		return getPane();
+	}
+
+	@Override
+	public Parent getPane() {
 		return idLabel.getParent().getParent().getParent();
+	}
+
+	@Override
+	public Navigation getNavigation() {
+		return new Navigation("Main[HSFD]", e -> switch (e.getCode()) {
+				case H -> new Navigation("Header[TDPA]",
+						s -> switch (s.getCode()) {
+					case T -> titleField;
+					case D -> descriptionArea;
+					case P -> preconditionArea;
+					case A -> postconditionArea;
+					default -> null;
+				});
+				case S -> new Navigation("Steps[1-9]",
+						s -> getStepEditor(s.getCharacter().charAt(0) - '1'));
+				case F -> new Navigation("Flags[FAM]",
+						s -> switch (s.getCode()) {
+					case F -> isFlakyBox;
+					case A -> isAutomatedBox;
+					case M -> isMutedBox;
+					default -> null;
+				});
+				case O -> new Navigation("Options[PSLTBA]",
+						s -> switch (s.getCode()) {
+					case P -> priorityChoice;
+					case S -> severityChoice;
+					case L -> layerChoice;
+					case T -> typeChoice;
+					case B -> behaviorChoice;
+					case A -> statusChoice;
+					default -> null;
+				});
+				default -> null;
+		});
 	}
 
 	public class StepEditor implements Supplier<Parent> {

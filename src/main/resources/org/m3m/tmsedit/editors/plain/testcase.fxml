@@ -12,14 +12,17 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.AnchorPane?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../style.css"
       fx:controller="org.m3m.tmsedit.editors.PlainTestCaseEditor">
-  <HBox spacing="10" alignment="CENTER_LEFT" maxHeight="34">
-    <padding>
-      <Insets left="10" top="10" right="10" bottom="10"/>
-    </padding>
-    <HBox>
+  <padding>
+    <Insets left="10" top="10" right="10" bottom="10"/>
+  </padding>
+  <AnchorPane maxHeight="34">
+    <HBox spacing="10">
+      <AnchorPane.topAnchor>0</AnchorPane.topAnchor>
+      <AnchorPane.leftAnchor>0</AnchorPane.leftAnchor>
       <Label fx:id="idLabel">
         <font>
           <Font name="System Bold" size="18"/>
@@ -31,14 +34,15 @@
         </font>
       </TextField>
     </HBox>
-    <Region/>
-    <HBox>
+    <HBox spacing="10">
+      <AnchorPane.topAnchor>0</AnchorPane.topAnchor>
+      <AnchorPane.rightAnchor>0</AnchorPane.rightAnchor>
       <CheckBox text="Flaky" fx:id="isFlakyBox"/>
       <CheckBox text="Automated" fx:id="isAutomatedBox"/>
       <CheckBox text="Muted" fx:id="isMutedBox"/>
     </HBox>
-  </HBox>
-  <GridPane>
+  </AnchorPane>
+  <GridPane hgap="10" vgap="10">
     <Label GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="0" text="Description">
       <font>
         <Font size="13"/>
@@ -52,18 +56,18 @@
         <Font size="13"/>
       </font>
     </Label>
-    <Label GridPane.columnIndex="4" GridPane.rowIndex="1" text="Priority:"/>
-    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="1" fx:id="priorityChoice"/>
-    <Label GridPane.columnIndex="6" GridPane.rowIndex="1" text="Severity:"/>
-    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="1" fx:id="severityChoice"/>
-    <Label GridPane.columnIndex="4" GridPane.rowIndex="2" text="Layer:"/>
-    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="2" fx:id="layerChoice"/>
-    <Label GridPane.columnIndex="6" GridPane.rowIndex="2" text="Type:"/>
-    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="2" fx:id="typeChoice"/>
-    <Label GridPane.columnIndex="4" GridPane.rowIndex="3" text="Behavior:"/>
-    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="behaviorChoice"/>
-    <Label GridPane.columnIndex="6" GridPane.rowIndex="3" text="Status:"/>
-    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="3" fx:id="statusChoice"/>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="1" text="Priority:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="1" fx:id="priorityChoice" minWidth="114"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="1" text="Severity:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="1" fx:id="severityChoice" minWidth="114"/>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="2" text="Layer:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="2" fx:id="layerChoice" minWidth="114"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="2" text="Type:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="2" fx:id="typeChoice" minWidth="114"/>
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="3" text="Behavior:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="behaviorChoice" minWidth="114"/>
+    <Label GridPane.columnIndex="6" GridPane.rowIndex="3" text="Status:" alignment="CENTER_RIGHT"/>
+    <ChoiceBox GridPane.columnIndex="7" GridPane.rowIndex="3" fx:id="statusChoice" minWidth="114"/>
     <Label GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="4" text="Pre-Condition">
       <font>
         <Font size="13"/>
